@@ -17,7 +17,9 @@ public class Video(
     TimeSpan? duration,
     IReadOnlyList<Thumbnail> thumbnails,
     IReadOnlyList<string> keywords,
-    Engagement engagement
+    Engagement engagement,
+    IReadOnlyList<Heatmap> heatmap,
+    IReadOnlyList<ChapterDescription> chapters
 ) : IVideo
 {
     /// <inheritdoc />
@@ -57,6 +59,16 @@ public class Video(
     /// Engagement statistics for the video.
     /// </summary>
     public Engagement Engagement { get; } = engagement;
+
+    /// <summary>
+    /// Heatmap.
+    /// </summary>
+    public IReadOnlyList<Heatmap> Heatmap { get; } = heatmap;
+
+    /// <summary>
+    /// Chapters.
+    /// </summary>
+    public IReadOnlyList<ChapterDescription> Chapters { get; } = chapters;
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]

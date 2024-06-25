@@ -36,6 +36,12 @@ public class VideoSearchResult(
     public IReadOnlyList<Thumbnail> Thumbnails { get; } = thumbnails;
 
     /// <inheritdoc />
+    public IReadOnlyList<Heatmap> Heatmap { get; } = new List<Heatmap>();
+
+    /// <inheritdoc />
+    public IReadOnlyList<ChapterDescription> Chapters { get; } = new List<ChapterDescription>();
+
+    /// <inheritdoc />
     [ExcludeFromCodeCoverage]
     public override string ToString() => $"Video ({Title})";
 }

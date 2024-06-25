@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -81,6 +82,30 @@ public class VideoClient(HttpClient http)
             .Concat(Thumbnail.GetDefaultSet(videoId))
             .ToArray();
 
+        var test = watchPage.InitialData?.ToString();
+
+        var chapters =
+            watchPage
+                .InitialData?.Chapters?.Select(t => new ChapterDescription(
+                    t.Title ?? string.Empty,
+                    t.TimeRangeStartMillis ?? 0,
+                    t.Thumbnails?.Select(thumbnail => new Thumbnail(
+                            thumbnail.Url ?? string.Empty,
+                            new Resolution(thumbnail.Width ?? 0, thumbnail.Height ?? 0)
+                        ))
+                        .ToArray() ?? Array.Empty<Thumbnail>()
+                ))
+                .ToArray() ?? [];
+
+        var heatmap =
+            watchPage
+                .InitialData?.Heatmap?.Select(t => new Heatmap(
+                    t.TimeRangeStartMills,
+                    t.MarkerDurationMills,
+                    t.HeatMarkerIntensityScoreNormalized
+                ))
+                .ToArray() ?? [];
+
         return new Video(
             videoId,
             title,
@@ -95,7 +120,9 @@ public class VideoClient(HttpClient http)
                 playerResponse.ViewCount ?? 0,
                 watchPage.LikeCount ?? 0,
                 watchPage.DislikeCount ?? 0
-            )
+            ),
+            heatmap,
+            chapters
         );
     }
 }

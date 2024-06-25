@@ -91,6 +91,18 @@ internal partial class VideoWatchPage(IHtmlDocument content)
             .Pipe(Json.TryParse);
 
     [Lazy]
+    public InitialData? InitialData =>
+        content
+            .GetElementsByTagName("script")
+            .Select(e => e.Text())
+            .Select(s => Regex.Match(s, @"var\s+ytInitialData\s*=\s*(\{.*\})").Groups[1].Value)
+            .FirstOrDefault(s => !string.IsNullOrWhiteSpace(s))
+            ?.NullIfWhiteSpace()
+            ?.Pipe(Json.Extract)
+            ?.Pipe(Json.TryParse)
+            ?.Pipe(j => new InitialData(j));
+
+    [Lazy]
     public PlayerResponse? PlayerResponse =>
         content
             .GetElementsByTagName("script")

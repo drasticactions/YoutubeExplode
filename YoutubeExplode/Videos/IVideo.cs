@@ -41,4 +41,14 @@ public interface IVideo
     /// Video thumbnails.
     /// </summary>
     IReadOnlyList<Thumbnail> Thumbnails { get; }
+
+    /// <summary>
+    /// Heatmap.
+    /// </summary>
+    IReadOnlyList<Heatmap> Heatmap { get; }
+
+    /// <summary>
+    /// Chapters.
+    /// </summary>
+    IReadOnlyList<ChapterDescription> Chapters { get; }
 }
