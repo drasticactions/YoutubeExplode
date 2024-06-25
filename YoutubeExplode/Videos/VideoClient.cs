@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -97,14 +98,23 @@ public class VideoClient(HttpClient http)
                 ))
                 .ToArray() ?? [];
 
-        var heatmap =
-            watchPage
-                .InitialData?.Heatmap?.Select(t => new Heatmap(
-                    t.TimeRangeStartMills,
-                    t.MarkerDurationMills,
-                    t.HeatMarkerIntensityScoreNormalized
-                ))
-                .ToArray() ?? [];
+        var map = watchPage.InitialData?.Heatmap;
+        List<Heatmap> heatmap = new List<Heatmap>();
+        if (map is not null)
+        {
+            for (var i = 0; i < map.Count; i++)
+            {
+                var t = map[i];
+                heatmap.Add(
+                    new Heatmap(
+                        t.TimeRangeStartMills,
+                        t.MarkerDurationMills,
+                        t.HeatMarkerIntensityScoreNormalized,
+                        TimeSpan.FromMilliseconds(t.TimeRangeStartMills)
+                    )
+                );
+            }
+        }
 
         return new Video(
             videoId,

@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Lazy;
 using YoutubeExplode.Utils.Extensions;
@@ -8,11 +9,11 @@ internal class HeatmapData(JsonElement content)
 {
     [Lazy]
     public long TimeRangeStartMills =>
-        content.GetPropertyOrNull("startMillis")?.GetInt64OrNull() ?? 0;
+        Convert.ToInt64(content.GetPropertyOrNull("startMillis")?.GetStringOrNull() ?? "0");
 
     [Lazy]
     public long MarkerDurationMills =>
-        content.GetPropertyOrNull("durationMillis")?.GetInt64OrNull() ?? 0;
+        Convert.ToInt64(content.GetPropertyOrNull("durationMillis")?.GetStringOrNull() ?? "0");
 
     [Lazy]
     public decimal HeatMarkerIntensityScoreNormalized =>

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace YoutubeExplode.Videos;
@@ -8,7 +9,8 @@ namespace YoutubeExplode.Videos;
 public class Heatmap(
     long timeRangeStartMills,
     long markerDurationMills,
-    decimal heatMarkerIntensityScoreNormalized
+    decimal heatMarkerIntensityScoreNormalized,
+    TimeSpan markerStart
 )
 {
     /// <summary>
@@ -22,6 +24,11 @@ public class Heatmap(
     public long MarkerDurationMills { get; } = markerDurationMills;
 
     /// <summary>
+    /// Gets the start time of the heatmarker.
+    /// </summary>
+    public TimeSpan MarkerStart { get; } = markerStart;
+
+    /// <summary>
     /// Gets the intensity score of the heatmarker, normalized.
     /// </summary>
     public decimal HeatMarkerIntensityScoreNormalized { get; } = heatMarkerIntensityScoreNormalized;
@@ -29,5 +36,5 @@ public class Heatmap(
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
     public override string ToString() =>
-        $"Heatmap: {this.TimeRangeStartMills},{this.MarkerDurationMills},{this.HeatMarkerIntensityScoreNormalized}";
+        $"Heatmap: {this.MarkerStart},{this.MarkerDurationMills},{this.HeatMarkerIntensityScoreNormalized}";
 }
